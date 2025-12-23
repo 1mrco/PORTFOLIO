@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "rootDir": "src/public/ts",
+    "outDir": "public/js",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/public/ts"]
+}
+
+

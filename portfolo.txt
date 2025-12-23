@@ -1,0 +1,100 @@
+📌 Project Description: Interactive Portfolio Website (Node.js + TypeScript)
+Overview
+Build a professional, multi-page, interactive portfolio website for an individual named Talib Arkan Talib, using Node.js, Express, and TypeScript.
+The portfolio should showcase personal information, projects, certificates, and include multiple mini-games with a scoring system, as well as interactive UI effects and dark/light mode support.
+The website should be clean, modern, responsive, and suitable for a technical portfolio.
+Website Pages & Features
+1️⃣ Home Page (Main Page)
+Content & Layout
+Display the full name: Talib Arkan Talib
+Circular profile image centered or well-aligned
+Placeholder section for “About Me” text (content will be added later)
+Footer with contact information
+Profile Image Interaction
+Image must be perfectly circular
+On mouse hover:
+Glowing animated border around the image
+Smooth transition effect
+Theme Toggle
+Button to switch between:
+Dark Mode 🌙
+Light Mode ☀️
+User preference should persist (localStorage)
+Footer – Contact Information
+Email
+Phone number
+Instagram profile link
+LinkedIn profile link
+Icons preferred, with hover effects
+2️⃣ Projects Page
+Display projects as cards
+Each card includes:
+Project title
+Short description
+Optional image placeholder
+Hover effects:
+Slight scale up
+Shadow / glow
+Smooth animation
+Structure must be reusable for adding future projects easily
+3️⃣ Certificates Page
+Dedicated page for certificates
+Card-based layout
+Placeholder certificates for now
+Easy to add/remove certificates later
+Hover animations similar to project cards
+4️⃣ Games Page 🎮
+General Requirements
+The page must contain multiple mini-games
+Before starting any game:
+Player must enter their name
+Each game must track:
+Player name
+Score
+Score Display
+Below each game:
+Small score box showing:
+Player name
+Current score
+Scores can reset on page refresh (in-memory only)
+Games Examples (minimum two)
+Tic Tac Toe
+Memory Card Game
+(Structure code so more games can be added later easily)
+Technical Notes
+Games should work without page reload
+Written fully in TypeScript
+Clean separation of game logic
+🎨 UI & Interaction Requirements
+Buttons, cards, and images must:
+Respond to mouse hover
+Include smooth transitions
+Include visual feedback (glow, shadow, movement)
+Cursor-based interaction effects are encouraged
+Consistent design language across all pages
+Fully responsive (desktop & mobile friendly)
+🗂 Project Structure Requirement
+Organize the project using a clean and scalable structure similar to:
+src/
+ ├── server.ts
+ ├── routes/
+ ├── views/
+ ├── public/
+ │   ├── css/
+ │   ├── ts/
+ │   └── images/
+tsconfig.json
+package.json
+🚀 Additional Notes
+Code must be clean, readable, and well-commented
+Use TypeScript types everywhere possible
+Avoid unnecessary libraries
+The project should be production-ready in structure
+Focus on professionalism and performance
+🎯 Final Goal
+Deliver a fully functional, interactive, multi-page portfolio website that:
+Represents a technical professional
+Demonstrates programming skills
+Includes engaging UI interactions
+Contains playable mini-games with score tracking
+Is easy to extend and maintain in the future

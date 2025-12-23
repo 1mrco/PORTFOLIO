@@ -1,0 +1,5 @@
+- once you are done making changes to the codebase, run all the tests and ensure they pass.
+- once you are done making changes, proactively assk user if you should also write new testing to cover a new functionality.
+
+alwaysApply: true
+---

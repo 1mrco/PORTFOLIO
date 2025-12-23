@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %> | <%= siteTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page-root">
+      <header class="site-header">
+        <nav class="nav">
+          <a href="/" class="nav-link nav-link-active">Home</a>
+          <a href="/projects" class="nav-link">Projects</a>
+          <a href="/certificates" class="nav-link">Certificates</a>
+          <a href="/games" class="nav-link">Games</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-text"></span>
+        </button>
+      </header>
+
+      <main class="main-content">
+        <section class="hero">
+          <div class="hero-content">
+            <div class="hero-text">
+              <p class="hero-kicker">Portfolio of</p>
+              <h1 class="hero-title"><%= name %></h1>
+              <p class="hero-subtitle">
+                A technical portfolio showcasing projects, certificates, and interactive mini-games.
+              </p>
+              <div class="hero-actions">
+                <a href="/projects" class="btn btn-primary">View Projects</a>
+                <a href="/games" class="btn btn-ghost">Play Games</a>
+              </div>
+            </div>
+            <div class="hero-profile">
+              <div class="profile-image-wrapper interactive-glow">
+                <img
+                  src="/images/pic.JPEG"
+                  alt="Profile image of <%= name %>"
+                  class="profile-image"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="about-preview">
+          <h2>About Me</h2>
+          
+          <div class="cv-section">
+            <h3 class="cv-section-title">Personal Information</h3>
+            <div class="cv-info-grid">
+              <div class="cv-info-item">
+                <span class="cv-label">Full Name:</span>
+                <span class="cv-value">Talib Arkan Talib</span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">Date of Birth:</span>
+                <span class="cv-value">November 24, 2003</span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">Nationality:</span>
+                <span class="cv-value">Iraqi</span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">Phone:</span>
+                <span class="cv-value">07719215943</span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">Email:</span>
+                <span class="cv-value">
+                  <a href="mailto:talb.arkan2003@gmail.com" class="cv-link">
+                    talb.arkan2003@gmail.com
+                  </a>
+                </span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">Address:</span>
+                <span class="cv-value">Baghdad, Iraq</span>
+              </div>
+              <div class="cv-info-item">
+                <span class="cv-label">LinkedIn:</span>
+                <span class="cv-value">
+                  <a href="https://www.linkedin.com/in/talb-arkan-192a58254" target="_blank" rel="noreferrer" class="cv-link">
+                    linkedin.com/in/talb-arkan-192a58254
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Career Objective</h3>
+            <p class="cv-text">
+              Motivated and detail-oriented Computer Science graduate with a solid foundation in networking, programming, web development, and system troubleshooting. Experienced in full-stack development using modern technologies including Node.js, JavaScript, HTML, CSS, and backend systems. Eager to begin a professional career as a NOC (Network Operations Center) Engineer or Web Developer where I can apply my technical skills in both network operations and software development, grow within a dynamic IT environment, and contribute to maintaining network reliability, performance, and building scalable web applications. Passionate about continuous learning, staying current with emerging technologies, and committed to delivering high-quality results in high-pressure situations.
+            </p>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Academic Qualifications</h3>
+            <div class="cv-education">
+              <h4 class="cv-education-degree">Bachelor of Computer Science</h4>
+              <p class="cv-education-institution">University of Baghdad, Baghdad, Iraq</p>
+              <p class="cv-education-year">Graduated: 2025</p>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Technical Skills</h3>
+            <div class="cv-skills">
+              <div class="cv-skill-category">
+                <strong>Programming Languages:</strong>
+                <span>Python, Java, C++, C#, UML, JavaScript, Matlab, HTML, CSS</span>
+              </div>
+              <div class="cv-skill-category">
+                <strong>Web Developer:</strong>
+                <span>HTML, CSS, JavaScript, Node.js, Backend, Bootstrap, Responsive Design</span>
+              </div>
+              <div class="cv-skill-category">
+                <strong>Data Structures & Algorithms:</strong>
+                <span>Good understanding and practical experience</span>
+              </div>
+              <div class="cv-skill-category">
+                <strong>Operating Systems:</strong>
+                <span>Windows, Linux (Ubuntu), macOS</span>
+              </div>
+              <div class="cv-skill-category">
+                <strong>Networking:</strong>
+                <span>OSI model, TCP/IP, Subnetting, CCNA, Postman</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Soft Skills</h3>
+            <ul class="cv-skills-list">
+              <li>Problem Solving</li>
+              <li>Critical Thinking</li>
+              <li>Teamwork & Collaboration</li>
+              <li>Time Management</li>
+              <li>Communication Skills</li>
+              <li>Fast Learner</li>
+              <li>Adaptability</li>
+              <li>Research & Documentation Skills</li>
+            </ul>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Work Experience</h3>
+            <div class="cv-experience-list">
+              <div class="cv-experience-item">
+                <h4 class="cv-job-title">Technical Support</h4>
+                <p class="cv-company">Earthlink – Baghdad, Iraq</p>
+                <p class="cv-duration">July 2025 – present</p>
+                <ul class="cv-job-duties">
+                  <li>Technical Support for internet, networking and customer issues.</li>
+                </ul>
+              </div>
+              <div class="cv-experience-item">
+                <h4 class="cv-job-title">IT Help Desk</h4>
+                <p class="cv-company">Digital Land – Baghdad, Iraq</p>
+                <p class="cv-duration">April 2025 – June 2025</p>
+                <ul class="cv-job-duties">
+                  <li>Technical Support for computer and Network.</li>
+                </ul>
+              </div>
+              <div class="cv-experience-item">
+                <h4 class="cv-job-title">Supervisor</h4>
+                <p class="cv-company">Bun Ridha Alwan Café – Baghdad, Iraq</p>
+                <p class="cv-duration">July 2022 – May 2024</p>
+                <ul class="cv-job-duties">
+                  <li>Oversaw staff, managed shifts, and ensured service quality.</li>
+                </ul>
+              </div>
+              <div class="cv-experience-item">
+                <h4 class="cv-job-title">Content Writer</h4>
+                <p class="cv-company">The Station</p>
+                <p class="cv-duration">April 2023 – June 2023</p>
+                <ul class="cv-job-duties">
+                  <li>Created and edited content for digital platforms.</li>
+                </ul>
+              </div>
+              <div class="cv-experience-item">
+                <h4 class="cv-job-title">Barista</h4>
+                <p class="cv-company">Bun Ridha Alwan Café – Baghdad, Iraq</p>
+                <p class="cv-duration">March 2021 – July 2022</p>
+                <ul class="cv-job-duties">
+                  <li>Prepared beverages and handled customer service.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-section-title">Languages</h3>
+            <ul class="cv-skills-list">
+              <li><strong>Arabic:</strong> Native</li>
+              <li><strong>English:</strong> Good</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="contact-section">
+          <h2 class="contact-section-title">Get In Touch</h2>
+          <p class="contact-section-subtitle">Send me a message and I'll get back to you as soon as possible.</p>
+          
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Your Name</label>
+              <input 
+                type="text" 
+                id="contact-name" 
+                name="name" 
+                class="form-input" 
+                placeholder="Enter your name"
+                required
+              />
+              <span class="error-message" id="name-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Your Email</label>
+              <input 
+                type="email" 
+                id="contact-email" 
+                name="email" 
+                class="form-input" 
+                placeholder="Enter your email"
+                required
+              />
+              <span class="error-message" id="email-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-subject" class="form-label">Subject</label>
+              <input 
+                type="text" 
+                id="contact-subject" 
+                name="subject" 
+                class="form-input" 
+                placeholder="Enter message subject"
+                required
+              />
+              <span class="error-message" id="subject-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message" class="form-label">Message</label>
+              <textarea 
+                id="contact-message" 
+                name="message" 
+                class="form-textarea" 
+                rows="6"
+                placeholder="Enter your message"
+                required
+              ></textarea>
+              <span class="error-message" id="message-error"></span>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-submit" id="submit-btn">
+                <span class="btn-text">Send Message</span>
+                <span class="btn-loading" style="display: none;">Sending...</span>
+              </button>
+            </div>
+
+            <div id="form-success" class="form-message form-success" style="display: none;">
+              ✓ Message sent successfully! I'll get back to you soon.
+            </div>
+            <div id="form-error" class="form-message form-error" style="display: none;">
+              ✗ Failed to send message. Please try again later.
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-left">
+          <span class="footer-name">Talib Arkan Talib</span>
+        </div>
+        <div class="footer-right">
+          <a href="mailto:talb.arkan2003@gmail.com" class="footer-icon" aria-label="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/talb-arkan-192a58254" target="_blank" rel="noreferrer" class="footer-icon" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/cursorEffects.js" type="module" defer></script>
+    <script src="/js/home.js" type="module" defer></script>
+  </body>
+  </html>
+
+
