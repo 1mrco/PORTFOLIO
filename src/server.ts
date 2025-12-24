@@ -476,15 +476,21 @@ app.get("/api/players/export", (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Portfolio server running at http://localhost:${PORT}`);
-  // eslint-disable-next-line no-console
-  console.log(`Player data stored in: ${PLAYERS_FILE}`);
-  if (!process.env.EMAIL_PASS) {
+// Export app for Vercel serverless functions
+module.exports = app;
+
+// Only listen if running locally (not on Vercel)
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  app.listen(PORT, () => {
     // eslint-disable-next-line no-console
-    console.warn("⚠️  WARNING: EMAIL_PASS not set. Contact form emails will not work.");
-  }
-});
+    console.log(`Portfolio server running at http://localhost:${PORT}`);
+    // eslint-disable-next-line no-console
+    console.log(`Player data stored in: ${PLAYERS_FILE}`);
+    if (!process.env.EMAIL_PASS) {
+      // eslint-disable-next-line no-console
+      console.warn("⚠️  WARNING: EMAIL_PASS not set. Contact form emails will not work.");
+    }
+  });
+}
 
 
