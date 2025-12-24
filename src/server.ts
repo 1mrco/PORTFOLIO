@@ -3,6 +3,7 @@ import path from "path";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import fs from "fs";
+import { kv } from "@vercel/kv";
 
 // Load environment variables
 dotenv.config();
@@ -10,33 +11,89 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Data storage file paths
-const DATA_DIR = path.join(process.cwd(), "data");
+// Check if running on Vercel
+const isVercel = !!process.env.VERCEL;
+
+// Data storage - use KV on Vercel, files locally
+const DATA_DIR = isVercel ? "/tmp" : path.join(process.cwd(), "data");
 const PLAYERS_FILE = path.join(DATA_DIR, "players.json");
 const MESSAGES_FILE = path.join(DATA_DIR, "messages.json");
 const PROJECTS_FILE = path.join(DATA_DIR, "projects.json");
 const CERTIFICATES_FILE = path.join(DATA_DIR, "certificates.json");
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Helper function to read from KV or file
+async function readData(key: string, filePath: string, defaultValue: any): Promise<any> {
+  // Try Vercel KV first if available
+  if (isVercel && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    try {
+      const data = await kv.get(key);
+      if (data) return data;
+    } catch (error) {
+      console.error(`Error reading from KV (${key}):`, error);
+    }
+  }
+  
+  // Fallback to file system (works locally and in /tmp on Vercel)
+  try {
+    if (fs.existsSync(filePath)) {
+      return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    }
+  } catch (error) {
+    console.error(`Error reading file (${filePath}):`, error);
+  }
+  
+  return defaultValue;
 }
 
-// Initialize data files if they don't exist
-if (!fs.existsSync(PLAYERS_FILE)) {
-  fs.writeFileSync(PLAYERS_FILE, JSON.stringify({ players: [] }, null, 2));
+// Helper function to write to KV or file
+async function writeData(key: string, filePath: string, data: any): Promise<void> {
+  // Try Vercel KV first if available
+  if (isVercel && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    try {
+      await kv.set(key, data);
+      console.log(`Data saved to KV: ${key}`);
+      return; // Successfully saved to KV
+    } catch (error) {
+      console.error(`Error writing to KV (${key}):`, error);
+      // Fall through to file system
+    }
+  }
+  
+  // Fallback to file system (works locally and in /tmp on Vercel)
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    console.log(`Data saved to file: ${filePath}`);
+  } catch (error) {
+    console.error(`Error writing file (${filePath}):`, error);
+    // Log data to console as last resort (for debugging)
+    console.log(`Data that failed to save (${key}):`, JSON.stringify(data, null, 2));
+  }
 }
 
-if (!fs.existsSync(MESSAGES_FILE)) {
-  fs.writeFileSync(MESSAGES_FILE, JSON.stringify({ messages: [] }, null, 2));
-}
-
-if (!fs.existsSync(PROJECTS_FILE)) {
-  fs.writeFileSync(PROJECTS_FILE, JSON.stringify({ projects: [] }, null, 2));
-}
-
-if (!fs.existsSync(CERTIFICATES_FILE)) {
-  fs.writeFileSync(CERTIFICATES_FILE, JSON.stringify({ certificates: [] }, null, 2));
+// Initialize data storage
+if (!isVercel) {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  
+  if (!fs.existsSync(PLAYERS_FILE)) {
+    fs.writeFileSync(PLAYERS_FILE, JSON.stringify({ players: [] }, null, 2));
+  }
+  
+  if (!fs.existsSync(MESSAGES_FILE)) {
+    fs.writeFileSync(MESSAGES_FILE, JSON.stringify({ messages: [] }, null, 2));
+  }
+  
+  if (!fs.existsSync(PROJECTS_FILE)) {
+    fs.writeFileSync(PROJECTS_FILE, JSON.stringify({ projects: [] }, null, 2));
+  }
+  
+  if (!fs.existsSync(CERTIFICATES_FILE)) {
+    fs.writeFileSync(CERTIFICATES_FILE, JSON.stringify({ certificates: [] }, null, 2));
+  }
 }
 
 // View engine setup
@@ -65,9 +122,9 @@ app.get("/", (_req: Request, res: Response) => {
   });
 });
 
-app.get("/projects", (_req: Request, res: Response) => {
+app.get("/projects", async (_req: Request, res: Response) => {
   try {
-    const data = JSON.parse(fs.readFileSync(PROJECTS_FILE, "utf-8"));
+    const data = await readData("projects", PROJECTS_FILE, { projects: [] });
     res.render("projects", {
       pageTitle: "Projects",
       pageScript: "projects.js",
@@ -83,9 +140,9 @@ app.get("/projects", (_req: Request, res: Response) => {
   }
 });
 
-app.get("/certificates", (_req: Request, res: Response) => {
+app.get("/certificates", async (_req: Request, res: Response) => {
   try {
-    const data = JSON.parse(fs.readFileSync(CERTIFICATES_FILE, "utf-8"));
+    const data = await readData("certificates", CERTIFICATES_FILE, { certificates: [] });
     res.render("certificates", {
       pageTitle: "Certificates",
       pageScript: "certificates.js",
@@ -109,9 +166,9 @@ app.get("/games", (_req: Request, res: Response) => {
 });
 
 // Live data views - Excel-like tables
-app.get("/data/messages", (_req: Request, res: Response) => {
+app.get("/data/messages", async (_req: Request, res: Response) => {
   try {
-    const data = JSON.parse(fs.readFileSync(MESSAGES_FILE, "utf-8"));
+    const data = await readData("messages", MESSAGES_FILE, { messages: [] });
     const messages = (data.messages || [])
       .sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
@@ -128,9 +185,9 @@ app.get("/data/messages", (_req: Request, res: Response) => {
   }
 });
 
-app.get("/data/players", (_req: Request, res: Response) => {
+app.get("/data/players", async (_req: Request, res: Response) => {
   try {
-    const data = JSON.parse(fs.readFileSync(PLAYERS_FILE, "utf-8"));
+    const data = await readData("players", PLAYERS_FILE, { players: [] });
     let players = (data.players || [])
       .sort((a: any, b: any) => b.score - a.score);
 
@@ -189,7 +246,7 @@ app.post("/contact", async (req: Request, res: Response) => {
     };
 
     try {
-      const messagesData = JSON.parse(fs.readFileSync(MESSAGES_FILE, "utf-8"));
+      const messagesData = await readData("messages", MESSAGES_FILE, { messages: [] });
       messagesData.messages.push(messageData);
       
       // Keep only last 1000 messages
@@ -197,10 +254,10 @@ app.post("/contact", async (req: Request, res: Response) => {
         messagesData.messages = messagesData.messages.slice(-1000);
       }
       
-      fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messagesData, null, 2));
+      await writeData("messages", MESSAGES_FILE, messagesData);
       console.log(`Message saved from ${name} (${email})`);
     } catch (saveError) {
-      console.error("Error saving message to file:", saveError);
+      console.error("Error saving message:", saveError);
       // Continue even if save fails
     }
 
@@ -274,7 +331,7 @@ interface PlayerData {
 }
 
 // Save player score
-app.post("/api/players", (req: Request, res: Response) => {
+app.post("/api/players", async (req: Request, res: Response) => {
   try {
     const { name, game, score } = req.body;
 
@@ -286,7 +343,7 @@ app.post("/api/players", (req: Request, res: Response) => {
     }
 
     // Read existing players
-    const data = JSON.parse(fs.readFileSync(PLAYERS_FILE, "utf-8"));
+    const data = await readData("players", PLAYERS_FILE, { players: [] });
     
     // Add new player record
     const playerData: PlayerData = {
@@ -303,8 +360,8 @@ app.post("/api/players", (req: Request, res: Response) => {
       data.players = data.players.slice(-1000);
     }
 
-    // Save to file
-    fs.writeFileSync(PLAYERS_FILE, JSON.stringify(data, null, 2));
+    // Save to storage
+    await writeData("players", PLAYERS_FILE, data);
 
     res.json({
       success: true,
@@ -320,12 +377,12 @@ app.post("/api/players", (req: Request, res: Response) => {
 });
 
 // Get player scores (leaderboard)
-app.get("/api/players", (req: Request, res: Response) => {
+app.get("/api/players", async (req: Request, res: Response) => {
   try {
     const game = req.query.game as string;
     const limit = parseInt(req.query.limit as string) || 50;
 
-    const data = JSON.parse(fs.readFileSync(PLAYERS_FILE, "utf-8"));
+    const data = await readData("players", PLAYERS_FILE, { players: [] });
     let players = data.players || [];
 
     // Filter by game if specified
@@ -352,11 +409,11 @@ app.get("/api/players", (req: Request, res: Response) => {
 });
 
 // Get all contact messages
-app.get("/api/messages", (req: Request, res: Response) => {
+app.get("/api/messages", async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 100;
 
-    const data = JSON.parse(fs.readFileSync(MESSAGES_FILE, "utf-8"));
+    const data = await readData("messages", MESSAGES_FILE, { messages: [] });
     let messages = data.messages || [];
 
     // Sort by timestamp (newest first) and limit
@@ -378,9 +435,9 @@ app.get("/api/messages", (req: Request, res: Response) => {
 });
 
 // Export messages as CSV (Excel-compatible)
-app.get("/api/messages/export", (req: Request, res: Response) => {
+app.get("/api/messages/export", async (req: Request, res: Response) => {
   try {
-    const data = JSON.parse(fs.readFileSync(MESSAGES_FILE, "utf-8"));
+    const data = await readData("messages", MESSAGES_FILE, { messages: [] });
     let messages = data.messages || [];
 
     // Sort by timestamp (newest first)
@@ -424,11 +481,11 @@ app.get("/api/messages/export", (req: Request, res: Response) => {
 });
 
 // Export player data as CSV (Excel-compatible)
-app.get("/api/players/export", (req: Request, res: Response) => {
+app.get("/api/players/export", async (req: Request, res: Response) => {
   try {
     const game = req.query.game as string;
 
-    const data = JSON.parse(fs.readFileSync(PLAYERS_FILE, "utf-8"));
+    const data = await readData("players", PLAYERS_FILE, { players: [] });
     let players = data.players || [];
 
     // Filter by game if specified
